@@ -6,11 +6,9 @@ import NotFound from './components/NotFound';
 import MainLayout from './layouts/MainLayout';
 import './App.css';
 import Courses from './components/Courses';
-import courses from './data/courses';
 import SingleCourse from './components/SingleCourse';
 
 function App() {
-    const slug = useParams(courses.slug);
     return (
         <BrowserRouter>
             <div className="App">
@@ -18,12 +16,11 @@ function App() {
                     <Route path="/" element={<MainLayout />}>
                         <Route index element={<Home />} />
                         <Route path="courses" element={<Courses />} />
-                        <Route path="courses" element={<MainLayout />}>
-                            <Route
-                                path="courses/:slug"
-                                element={<SingleCourse slug={slug} />}
-                            />
-                        </Route>
+                        <Route path="courses" element={<MainLayout />} />
+                        <Route
+                            path="courses/:slug"
+                            element={<SingleCourse />}
+                        />
                         <Route path="contacts" element={<Contacts />} />
                         <Route path="about" element={<About />} />
                         <Route path="*" element={<NotFound />} />
