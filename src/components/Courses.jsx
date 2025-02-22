@@ -3,6 +3,7 @@ import queryString from 'query-string';
 import courses from '../data/courses';
 import { useState, useEffect } from 'react';
 import DropDown from '../UI/DropDown';
+//import SortCourses from './SortCourses';
 
 const SORT_KEYS = ['title', 'slug', 'id'];
 
@@ -16,18 +17,21 @@ function sortCourses(courses, key) {
 }
 
 const Courses = () => {
+    // возвращает полный путь (без домена),
+    // содержит уникальный ключ для кеширования страницы, параметры поиска
     const location = useLocation();
-    const query = queryString.parse(location.search);
+    // перекидывает на другую страницу, должна вызываться внутри useEffect
     const navigate = useNavigate();
+    //ищет в строке запрос
+    const query = queryString.parse(location.search);
     //Значение ссылки
     const [sortKey, setSortKey] = useState(query.sort);
     //объект со всеми отсортированными курсами
     const [sortedCourses, setSortedCourses] = useState(
         sortCourses(courses, sortKey)
     );
-
+    console.log(query);
     //console.log(sortCourses(courses, sortKey));
-
     useEffect(() => {
         if (!SORT_KEYS.includes(sortKey)) {
             navigate('.');
@@ -57,6 +61,8 @@ const Courses = () => {
                 </div>
             ))}
             <br />
+
+            {/* <SortCourses setSortedCourses={setSortedCourses} /> */}
         </>
     );
 };

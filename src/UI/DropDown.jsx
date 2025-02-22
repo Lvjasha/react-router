@@ -1,5 +1,3 @@
-//import { useEffect } from 'react';
-//import courses from '../data/courses';
 import styles from './DropDown.module.css';
 const DropDown = (props) => {
     const { sortCourses, setSortKey, courses } = props;
