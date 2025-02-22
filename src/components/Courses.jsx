@@ -2,6 +2,7 @@ import { Link, useNavigate, useLocation } from 'react-router-dom';
 import queryString from 'query-string';
 import courses from '../data/courses';
 import { useState, useEffect } from 'react';
+import DropDown from '../UI/DropDown';
 
 const SORT_KEYS = ['title', 'slug', 'id'];
 
@@ -18,12 +19,14 @@ const Courses = () => {
     const location = useLocation();
     const query = queryString.parse(location.search);
     const navigate = useNavigate();
+    //Значение ссылки
     const [sortKey, setSortKey] = useState(query.sort);
+    //объект со всеми отсортированными курсами
     const [sortedCourses, setSortedCourses] = useState(
         sortCourses(courses, sortKey)
     );
 
-    console.log(sortCourses(courses, sortKey));
+    //console.log(sortCourses(courses, sortKey));
 
     useEffect(() => {
         if (!SORT_KEYS.includes(sortKey)) {
@@ -33,38 +36,19 @@ const Courses = () => {
         }
     }, [sortKey, navigate]);
 
+    useEffect(() => {
+        setSortedCourses(sortCourses(courses, sortKey));
+    }, [...courses, sortKey]);
+
     return (
         <>
             <h1>{sortKey ? `Courses sorted by ${sortKey}` : 'Courses'}</h1>
+            <DropDown
+                courses={courses}
+                sortCourses={sortCourses}
+                setSortKey={setSortKey}
+            />
 
-            <div class="dropdown">
-                <button
-                    class="btn btn-secondary dropdown-toggle"
-                    type="button"
-                    id="dropdownMenuButton1"
-                    data-bs-toggle="dropdown"
-                    aria-expanded="false"
-                >
-                    Dropdown button
-                </button>
-                <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
-                    <li>
-                        <a class="dropdown-item" href="#">
-                            Id
-                        </a>
-                    </li>
-                    <li>
-                        <a class="dropdown-item" href="#">
-                            Title
-                        </a>
-                    </li>
-                    <li>
-                        <a class="dropdown-item" href="#">
-                            Slug
-                        </a>
-                    </li>
-                </ul>
-            </div>
             {sortedCourses.map((course) => (
                 <div key={course.id}>
                     <Link to={course.slug} className="courseLink">
